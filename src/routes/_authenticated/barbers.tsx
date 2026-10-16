@@ -26,7 +26,7 @@ function BarbersShell() {
   const { user } = Route.useLoaderData();
   const navigate = useNavigate();
   const queryClient = useQueryClient();
-  const isShop = user?.user_metadata?.role === "shop";
+  const isShop = user?.user_metadata?.["role"] === "shop";
 
   async function signOut() {
     await queryClient.cancelQueries();
