@@ -8,3 +8,5 @@
 > Commits you push to the connected branch sync back to Lovable and show up in
 > the editor, so keep the branch in a working state.
 <!-- LOVABLE:END -->
+
+- Signup role (customer | shop) lives only in auth user metadata for now; no app tables until the planned migrations milestone — keeps the data layer deliberate.
