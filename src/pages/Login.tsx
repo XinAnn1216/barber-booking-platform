@@ -1,4 +1,4 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "react-router";
 import { useEffect, useState, type FormEvent } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
@@ -6,27 +6,25 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { cn } from "@/lib/utils";
+import { usePageMeta } from "@/lib/page-meta";
 import heroRight from "@/assets/hero-right.jpg";
 
-export const Route = createFileRoute("/login")({
-  head: () => ({
-    meta: [
-      { title: "Sign in or sign up — Barberly" },
-      { name: "description", content: "Sign in to Barberly, or create an account as a customer or a barber." },
-      { property: "og:title", content: "Sign in — Barberly" },
-      { property: "og:description", content: "Join Barberly as a customer or a barber." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-    ],
-  }),
-  component: LoginPage,
-});
+const META = [
+  { name: "description", content: "Sign in to Barberly, or create an account as a customer or a barber." },
+  { property: "og:title", content: "Sign in — Barberly" },
+  { property: "og:description", content: "Join Barberly as a customer or a barber." },
+  { property: "og:type", content: "website" },
+  { name: "twitter:card", content: "summary" },
+];
 
 type Role = "customer" | "shop";
 
-function LoginPage() {
+type Mode = "signin" | "signup";
+
+export default function Login({ mode }: { mode: Mode }) {
+  usePageMeta("Sign in or sign up — Barberly", META);
   const navigate = useNavigate();
-  const [mode, setMode] = useState<"signin" | "signup">("signin");
+  const setMode = (next: Mode) => navigate(next === "signin" ? "/sign-in" : "/sign-up");
   const [role, setRole] = useState<Role>("customer");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
@@ -34,7 +32,7 @@ function LoginPage() {
 
   useEffect(() => {
     supabase.auth.getUser().then(({ data }) => {
-      if (data.user) navigate({ to: "/barbers", replace: true });
+      if (data.user) navigate("/app", { replace: true });
     });
   }, [navigate]);
 
@@ -58,7 +56,7 @@ function LoginPage() {
         const { error } = await supabase.auth.signInWithPassword({ email, password });
         if (error) throw error;
       }
-      navigate({ to: "/barbers", replace: true });
+      navigate("/app", { replace: true });
     } catch (err) {
       toast.error(err instanceof Error ? err.message : "Something went wrong");
     } finally {

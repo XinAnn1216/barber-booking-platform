@@ -1,29 +1,22 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { Link, useLoaderData, useNavigate } from "react-router";
+import type { User } from "@supabase/supabase-js";
 import { useQueryClient } from "@tanstack/react-query";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
+import { usePageMeta } from "@/lib/page-meta";
 
-export const Route = createFileRoute("/_authenticated/barbers")({
-  head: () => ({
-    meta: [
-      { title: "Your Barberly" },
-      { name: "description", content: "Your Barberly home." },
-      { property: "og:title", content: "Your Barberly" },
-      { property: "og:description", content: "Your Barberly home." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-      { name: "robots", content: "noindex" },
-    ],
-  }),
-  loader: async () => {
-    const { data } = await supabase.auth.getUser();
-    return { user: data.user };
-  },
-  component: BarbersShell,
-});
+const META = [
+  { name: "description", content: "Your Barberly home." },
+  { property: "og:title", content: "Your Barberly" },
+  { property: "og:description", content: "Your Barberly home." },
+  { property: "og:type", content: "website" },
+  { name: "twitter:card", content: "summary" },
+  { name: "robots", content: "noindex" },
+];
 
-function BarbersShell() {
-  const { user } = Route.useLoaderData();
+export default function Barbers() {
+  usePageMeta("Your Barberly", META);
+  const { user } = useLoaderData() as { user: User };
   const navigate = useNavigate();
   const queryClient = useQueryClient();
   const isShop = user?.user_metadata?.["role"] === "shop";
@@ -32,7 +25,7 @@ function BarbersShell() {
     await queryClient.cancelQueries();
     queryClient.clear();
     await supabase.auth.signOut();
-    navigate({ to: "/login", replace: true });
+    navigate("/sign-in", { replace: true });
   }
 
   return (

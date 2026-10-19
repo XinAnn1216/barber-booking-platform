@@ -1,25 +1,20 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { Link } from "react-router";
 import { useState } from "react";
 import { BadgeCheck, CalendarCheck, Search, ShieldCheck, Star, Sparkles } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
+import { usePageMeta } from "@/lib/page-meta";
 import { FEATURED_BARBERS, SERVICES } from "@/lib/barbers";
 import heroLeft from "@/assets/hero-left.jpg";
 import heroRight from "@/assets/hero-right.jpg";
 
-export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Barberly — Find your stylist and book in a few taps" },
-      { name: "description", content: "Discover top-rated barbers and stylists near you. Cut, Color, Perm and Beard — book online in seconds." },
-      { property: "og:title", content: "Barberly — Style with Confident Hair" },
-      { property: "og:description", content: "Discover top-rated barbers near you and book online in a few taps." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
-  component: Index,
-});
+const META = [
+  { name: "description", content: "Discover top-rated barbers and stylists near you. Cut, Color, Perm and Beard — book online in seconds." },
+  { property: "og:title", content: "Barberly — Style with Confident Hair" },
+  { property: "og:description", content: "Discover top-rated barbers near you and book online in a few taps." },
+  { property: "og:type", content: "website" },
+  { name: "twitter:card", content: "summary_large_image" },
+];
 
 const FILTERS = ["All", ...SERVICES] as const;
 const PARTNERS = ["Oak & Blade", "LUMEN", "Ink & Fade", "MAISON COIF", "The Gentleman's Chair", "NORTH BARBERS"];
@@ -43,7 +38,8 @@ function SearchField({ className, large }: { className?: string; large?: boolean
   );
 }
 
-function Index() {
+export default function Index() {
+  usePageMeta("Barberly — Find your stylist and book in a few taps", META);
   const [filter, setFilter] = useState<(typeof FILTERS)[number]>("All");
   const barbers = filter === "All" ? FEATURED_BARBERS : FEATURED_BARBERS.filter((b) => b.services.includes(filter));
 
@@ -53,7 +49,7 @@ function Index() {
         <Link to="/" className="font-serif text-3xl font-semibold tracking-tight">Barberly</Link>
         <SearchField className="ml-auto hidden max-w-sm flex-1 md:flex" />
         <Button asChild variant="pill" className="ml-auto px-6 md:ml-0">
-          <Link to="/login">Login</Link>
+          <Link to="/sign-in">Login</Link>
         </Button>
       </header>
 
