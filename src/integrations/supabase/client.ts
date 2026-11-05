@@ -26,8 +26,9 @@ function createSupabaseFetch(supabaseKey: string): typeof fetch {
 }
 
 function createSupabaseClient() {
-  const SUPABASE_URL = import.meta.env["VITE_SUPABASE_URL"] as string | undefined;
-  const SUPABASE_PUBLISHABLE_KEY = import.meta.env["VITE_SUPABASE_PUBLISHABLE_KEY"] as string | undefined;
+  // Trim stray leading/trailing whitespace pasted into the env vars (e.g. in the Vercel dashboard).
+  const SUPABASE_URL = (import.meta.env["VITE_SUPABASE_URL"] as string | undefined)?.trim();
+  const SUPABASE_PUBLISHABLE_KEY = (import.meta.env["VITE_SUPABASE_PUBLISHABLE_KEY"] as string | undefined)?.trim();
 
   if (!SUPABASE_URL || !SUPABASE_PUBLISHABLE_KEY) {
     const missing = [
