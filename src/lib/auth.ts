@@ -5,7 +5,7 @@ import { supabase } from "@/integrations/supabase/client";
 export type Role = "customer" | "shop";
 
 export function roleOf(user: User | null | undefined): Role {
-  return user?.user_metadata?.role === "shop" ? "shop" : "customer";
+  return user?.user_metadata?.["role"] === "shop" ? "shop" : "customer";
 }
 
 export function useAuthUser() {
