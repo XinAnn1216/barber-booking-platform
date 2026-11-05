@@ -1,25 +1,13 @@
-import { createFileRoute, Link, useNavigate } from "@tanstack/react-router";
+import { Link, useNavigate } from "react-router-dom";
+import { useDocumentTitle } from "@/hooks/use-document-title";
 import { useState, type FormEvent } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import type { Role } from "@/lib/auth";
 
-export const Route = createFileRoute("/login")({
-  head: () => ({
-    meta: [
-      { title: "Sign in or sign up — Barberly" },
-      { name: "description", content: "Sign in or create a Barberly account as a customer or barber." },
-      { property: "og:title", content: "Sign in — Barberly" },
-      { property: "og:description", content: "Join Barberly as a customer or barber." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary" },
-    ],
-  }),
-  component: LoginPage,
-});
-
-function LoginPage() {
+export default function LoginPage() {
+  useDocumentTitle("Sign in or sign up — Barberly");
   const navigate = useNavigate();
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [role, setRole] = useState<Role>("customer");
@@ -43,7 +31,7 @@ function LoginPage() {
       toast.error(error.message);
       return;
     }
-    navigate({ to: "/barbers" });
+    navigate("/barbers");
   }
 
   const seg = (active: boolean) =>

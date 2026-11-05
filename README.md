@@ -1,24 +1,34 @@
 # Barber Booking Platform
 
-Implement exactly the screenshot and nothing else
-
-This project was built with [Lovable](https://lovable.dev).
-
-## Build with Lovable
-
-Continue developing this project in the [Lovable editor](https://lovable.dev/projects/b5da255c-288f-4bbe-acfe-9b88df0b39ae).
-
-- **Ship faster**: describe what you want to build and Lovable handles the code.
-- **Stay in sync**: every change made in Lovable is committed straight to this repository.
-- **Full ownership**: this code is yours. Push to `main` on GitHub and your changes sync back into Lovable, ready for your next prompt.
+Barberly: a Vite + React single-page app with Supabase auth.
 
 ## Development
 
-Prefer working locally? You need Node.js and npm — [install with nvm](https://github.com/nvm-sh/nvm#installing-and-updating).
+You need Node.js and npm.
 
 ```sh
-git clone <this-repository-url>
-cd <repository-name>
-npm i
+npm install
 npm run dev
 ```
+
+## Build
+
+```sh
+npm run build   # outputs static files to dist/
+npm run preview
+```
+
+## Routes
+
+Client-side routing uses `react-router-dom`:
+
+- `/` — landing page
+- `/login` — sign in / sign up (Customer or Barber)
+- `/barbers` — signed-in home
+
+## Deploying to Vercel
+
+Import the repo in Vercel with the **Vite** framework preset (build command `npm run build`, output directory `dist`).
+`vercel.json` rewrites every path to `/index.html`, so deep links like `/login` and `/barbers` load the SPA instead of returning 404.
+
+Set `VITE_SUPABASE_URL` and `VITE_SUPABASE_PUBLISHABLE_KEY` in the Vercel project's environment variables (or keep them in `.env`).

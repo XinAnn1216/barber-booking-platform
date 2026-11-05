@@ -1,4 +1,5 @@
-import { createFileRoute, Link } from "@tanstack/react-router";
+import { Link } from "react-router-dom";
+import { useDocumentTitle } from "@/hooks/use-document-title";
 import { useState } from "react";
 import { BadgeCheck, Zap, ShieldCheck, Star, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -8,20 +9,6 @@ import b1 from "@/assets/barber-1.jpg";
 import b2 from "@/assets/barber-2.jpg";
 import b3 from "@/assets/barber-3.jpg";
 import b4 from "@/assets/barber-4.jpg";
-
-export const Route = createFileRoute("/")({
-  head: () => ({
-    meta: [
-      { title: "Barberly — Find your stylist and book online" },
-      { name: "description", content: "Discover top-rated barbers and hair stylists near you and book a slot in a few taps." },
-      { property: "og:title", content: "Barberly — Style with Confident Hair" },
-      { property: "og:description", content: "Discover top-rated barbers and book a slot in a few taps." },
-      { property: "og:type", content: "website" },
-      { name: "twitter:card", content: "summary_large_image" },
-    ],
-  }),
-  component: Index,
-});
 
 const CHIPS = ["All", "Cut", "Color", "Perm", "Beard"] as const;
 const LOGOS = ["MAISON", "Atelier Noir", "CUTHOUSE", "Golden Comb", "STUDIO K", "Ivory & Co"];
@@ -42,7 +29,8 @@ function Wordmark() {
   return <Link to="/" className="font-serif text-2xl font-semibold tracking-tight">Barberly</Link>;
 }
 
-function Index() {
+export default function Index() {
+  useDocumentTitle("Barberly — Find your stylist and book online");
   const [chip, setChip] = useState<(typeof CHIPS)[number]>("All");
   const shown = BARBERS.filter((b) => chip === "All" || b.services.includes(chip));
 

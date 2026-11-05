@@ -1,17 +1,43 @@
-import { QueryClient } from "@tanstack/react-query";
-import { createRouter, rootRouteId } from "@tanstack/react-router";
-import { describe, expect, it } from "vitest";
+import { render, screen } from "@testing-library/react";
+import { MemoryRouter } from "react-router-dom";
+import { describe, expect, it, vi } from "vitest";
 
-import { routeTree } from "@/routeTree.gen";
+vi.mock("@/integrations/supabase/client", () => ({
+  supabase: {
+    auth: {
+      onAuthStateChange: () => ({ data: { subscription: { unsubscribe: () => {} } } }),
+      getUser: () => new Promise(() => {}),
+    },
+  },
+}));
 
-// Match routes without running loaders or rendering: loaders may need a server or
-// network the test run lacks, and jsdom never loads the stylesheets React waits on.
+import App from "@/App";
+
+const renderAt = (path: string) =>
+  render(
+    <MemoryRouter initialEntries={[path]}>
+      <App />
+    </MemoryRouter>,
+  );
+
 describe("App routing", () => {
-  it("matches a page for / instead of falling back to not found", () => {
-    const router = createRouter({ routeTree, context: { queryClient: new QueryClient() } });
+  it("renders the landing page at /", () => {
+    renderAt("/");
+    expect(screen.getByText("Best booking experience")).toBeInTheDocument();
+  });
 
-    const matches = router.matchRoutes("/");
+  it("renders the sign-in page at /login", () => {
+    renderAt("/login");
+    expect(screen.getByText("Welcome back")).toBeInTheDocument();
+  });
 
-    expect(matches.at(-1)?.routeId).not.toBe(rootRouteId);
+  it("matches /barbers instead of falling back to not found", () => {
+    renderAt("/barbers");
+    expect(screen.queryByText("Page not found")).not.toBeInTheDocument();
+  });
+
+  it("shows not found for unknown paths", () => {
+    renderAt("/app");
+    expect(screen.getByText("Page not found")).toBeInTheDocument();
   });
 });
