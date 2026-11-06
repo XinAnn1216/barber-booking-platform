@@ -46,7 +46,7 @@ export default function Index() {
       </header>
 
       <section className="mx-auto max-w-7xl px-6 pb-16 pt-6">
-        <div className="relative overflow-hidden rounded-[2rem] bg-cream px-6 py-14 md:py-20">
+        <div className="relative overflow-hidden rounded-[2rem] bg-velvet px-6 py-14 md:py-20">
           <img src={heroLeft} alt="Man with textured crop haircut" width={768} height={1024}
             className="absolute bottom-0 left-0 hidden h-[90%] w-auto rounded-tr-[2rem] object-cover lg:block animate-fade-up" />
           <img src={heroRight} alt="Woman with glossy wavy hair" width={768} height={1024}
@@ -54,7 +54,7 @@ export default function Index() {
           <div className="relative mx-auto max-w-xl text-center animate-fade-up">
             <p className="text-xs font-medium uppercase tracking-[0.3em] text-muted-foreground">New Look</p>
             <h1 className="mt-4 text-5xl font-medium leading-[1.05] md:text-7xl">Style with <em>Confident</em> Hair</h1>
-            <div className="mx-auto mt-10 flex max-w-md items-center rounded-full bg-card p-1.5 shadow-lift">
+            <div className="mx-auto mt-10 flex max-w-md items-center rounded-full bg-walnut p-1.5 shadow-lift">
               <Search className="ml-4 h-4 w-4 text-muted-foreground" />
               <input placeholder="Find your stylist or search a style" className="h-11 flex-1 bg-transparent px-3 text-sm outline-none" />
               <Button variant="pill" className="h-11">Search</Button>
@@ -62,7 +62,7 @@ export default function Index() {
             <div className="mt-6 flex flex-wrap justify-center gap-2">
               {CHIPS.map((c) => (
                 <button key={c} onClick={() => setChip(c)}
-                  className={`rounded-full border px-4 py-1.5 text-sm transition ${chip === c ? "border-primary bg-primary text-primary-foreground" : "border-border bg-card hover:bg-secondary"}`}>
+                  className={`rounded-full border px-4 py-1.5 text-sm transition ${chip === c ? "border-primary bg-primary text-primary-foreground" : "border-border bg-walnut hover:bg-secondary"}`}>
                   {c}
                 </button>
               ))}
@@ -71,9 +71,9 @@ export default function Index() {
         </div>
       </section>
 
-      <section className="border-y border-border">
+      <section className="border-y border-border bg-walnut">
         <div className="mx-auto flex max-w-7xl flex-wrap items-center justify-around gap-8 px-6 py-8">
-          {LOGOS.map((l) => <span key={l} className="font-serif text-xl text-muted-foreground">{l}</span>)}
+          {LOGOS.map((l) => <span key={l} className="font-serif text-xl italic text-muted-foreground">{l}</span>)}
         </div>
       </section>
 
@@ -81,8 +81,8 @@ export default function Index() {
         <h2 className="text-center text-4xl font-medium">Best booking experience</h2>
         <div className="mt-12 grid grid-cols-2 gap-6 md:grid-cols-4">
           {FEATURES.map(({ icon: Icon, label }, i) => (
-            <div key={label} className="flex flex-col items-center gap-4 rounded-3xl bg-muted p-8 text-center animate-fade-up" style={{ animationDelay: `${i * 80}ms` }}>
-              <span className="grid h-14 w-14 place-items-center rounded-full bg-accent"><Icon className="h-6 w-6" /></span>
+            <div key={label} className="flex flex-col items-center gap-4 rounded-3xl bg-leather p-8 text-center animate-fade-up" style={{ animationDelay: `${i * 80}ms` }}>
+              <span className="grid h-14 w-14 place-items-center rounded-full bg-primary text-primary-foreground shadow-lift"><Icon className="h-6 w-6" /></span>
               <span className="font-medium">{label}</span>
             </div>
           ))}
@@ -93,7 +93,7 @@ export default function Index() {
         <h2 className="text-4xl font-medium">Popular</h2>
         <div className="mt-10 grid gap-6 sm:grid-cols-2 lg:grid-cols-4">
           {shown.map((b) => (
-            <a key={b.name} href="#" onClick={(e) => e.preventDefault()} className="group block overflow-hidden rounded-3xl bg-card border border-border card-lift">
+            <a key={b.name} href="#" onClick={(e) => e.preventDefault()} className="group block overflow-hidden rounded-3xl bg-walnut border border-border card-lift">
               <div className="relative">
                 <img src={b.img} alt={b.name} loading="lazy" width={600} height={600} className="aspect-square w-full object-cover" />
                 <span className="absolute left-3 top-3 rounded-full bg-primary px-3 py-1 text-xs text-primary-foreground">Popular</span>
@@ -102,7 +102,7 @@ export default function Index() {
                 <h3 className="text-xl font-medium">{b.name}</h3>
                 <p className="text-sm text-muted-foreground">{b.shop}</p>
                 <div className="mt-3 flex flex-wrap gap-1.5">
-                  {b.services.map((s) => <span key={s} className="rounded-full bg-secondary px-2.5 py-0.5 text-xs">{s}</span>)}
+                  {b.services.map((s) => <span key={s} className="rounded-full bg-secondary px-2.5 py-0.5 text-xs text-secondary-foreground">{s}</span>)}
                 </div>
                 <div className="mt-4 flex items-center justify-between text-sm">
                   <span className="flex items-center gap-1"><Star className="h-4 w-4 fill-star text-star" />{b.rating} <span className="text-muted-foreground">({b.reviews})</span></span>

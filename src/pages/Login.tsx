@@ -38,8 +38,8 @@ export default function LoginPage() {
     `flex-1 rounded-full py-2 text-sm font-medium transition ${active ? "bg-primary text-primary-foreground" : "text-muted-foreground"}`;
 
   return (
-    <div className="grid min-h-screen place-items-center bg-cream px-4">
-      <div className="w-full max-w-md rounded-[2rem] bg-card p-8 shadow-lift animate-fade-up">
+    <div className="grid min-h-screen place-items-center bg-velvet px-4">
+      <div className="w-full max-w-md rounded-[2rem] bg-walnut p-8 shadow-lift animate-fade-up">
         <Link to="/" className="font-serif text-2xl font-semibold">Barberly</Link>
         <h1 className="mt-6 text-3xl font-medium">{mode === "signin" ? "Welcome back" : "Create your account"}</h1>
 

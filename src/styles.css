@@ -46,8 +46,8 @@
   --color-input: var(--input);
   --color-ring: var(--ring);
   --color-ring-offset-background: var(--background);
-  --font-serif: "Playfair Display", Georgia, serif;
-  --font-sans: "Inter", system-ui, sans-serif;
+  --font-serif: "Fraunces", "Cooper Black", Georgia, serif;
+  --font-sans: "Jost", "Futura", system-ui, sans-serif;
   --color-cream: var(--cream);
   --color-star: var(--star);
   --shadow-lift: var(--shadow-lift);
@@ -66,43 +66,49 @@
   --color-sidebar-ring: var(--sidebar-ring);
 }
 
+/*
+ * "Mid-century living room" palette (1960s):
+ * walnut-dark room, olive-green leather, teal velvet curtains,
+ * burnt-orange mushroom lamp, red rotary phone, amber glass.
+ */
 :root {
-  --radius: 1rem;
-  --background: oklch(0.99 0.005 85);
-  --foreground: oklch(0.18 0.01 60);
-  --card: oklch(1 0 0);
-  --card-foreground: oklch(0.18 0.01 60);
-  --popover: oklch(1 0 0);
-  --popover-foreground: oklch(0.18 0.01 60);
-  --primary: oklch(0.17 0.008 60);
-  --primary-foreground: oklch(0.98 0.008 85);
-  --secondary: oklch(0.94 0.025 80);
-  --secondary-foreground: oklch(0.25 0.02 60);
-  --muted: oklch(0.96 0.015 85);
-  --muted-foreground: oklch(0.5 0.02 65);
-  --accent: oklch(0.88 0.045 75);
-  --accent-foreground: oklch(0.2 0.02 60);
-  --destructive: oklch(0.577 0.245 27.325);
-  --destructive-foreground: oklch(0.984 0.003 247.858);
-  --border: oklch(0.9 0.02 80);
-  --input: oklch(0.9 0.02 80);
-  --ring: oklch(0.6 0.05 70);
-  --cream: oklch(0.95 0.025 82);
-  --star: oklch(0.72 0.14 70);
-  --shadow-lift: 0 20px 40px -20px oklch(0.3 0.03 60 / 0.35);
-  --chart-1: oklch(0.646 0.222 41.116);
-  --chart-2: oklch(0.6 0.118 184.704);
-  --chart-3: oklch(0.398 0.07 227.392);
-  --chart-4: oklch(0.828 0.189 84.429);
-  --chart-5: oklch(0.769 0.188 70.08);
-  --sidebar: oklch(0.984 0.003 247.858);
-  --sidebar-foreground: oklch(0.129 0.042 264.695);
-  --sidebar-primary: oklch(0.208 0.042 265.755);
-  --sidebar-primary-foreground: oklch(0.984 0.003 247.858);
-  --sidebar-accent: oklch(0.968 0.007 247.896);
-  --sidebar-accent-foreground: oklch(0.208 0.042 265.755);
-  --sidebar-border: oklch(0.929 0.013 255.508);
-  --sidebar-ring: oklch(0.704 0.04 256.788);
+  color-scheme: dark;
+  --radius: 1.25rem;
+  --background: oklch(0.2 0.022 70);
+  --foreground: oklch(0.93 0.035 85);
+  --card: oklch(0.27 0.045 55);
+  --card-foreground: oklch(0.93 0.035 85);
+  --popover: oklch(0.25 0.04 58);
+  --popover-foreground: oklch(0.93 0.035 85);
+  --primary: oklch(0.68 0.165 47);
+  --primary-foreground: oklch(0.17 0.025 50);
+  --secondary: oklch(0.4 0.075 128);
+  --secondary-foreground: oklch(0.94 0.035 90);
+  --muted: oklch(0.31 0.06 128);
+  --muted-foreground: oklch(0.78 0.045 85);
+  --accent: oklch(0.47 0.085 195);
+  --accent-foreground: oklch(0.95 0.025 90);
+  --destructive: oklch(0.58 0.19 28);
+  --destructive-foreground: oklch(0.96 0.02 85);
+  --border: oklch(0.4 0.045 70);
+  --input: oklch(0.42 0.045 70);
+  --ring: oklch(0.72 0.15 60);
+  --cream: oklch(0.36 0.075 200);
+  --star: oklch(0.78 0.15 68);
+  --shadow-lift: 0 24px 48px -18px oklch(0.08 0.02 60 / 0.75), 0 0 0 1px oklch(0.75 0.14 60 / 0.25);
+  --chart-1: oklch(0.68 0.165 47);
+  --chart-2: oklch(0.47 0.085 195);
+  --chart-3: oklch(0.45 0.08 128);
+  --chart-4: oklch(0.78 0.15 68);
+  --chart-5: oklch(0.58 0.19 28);
+  --sidebar: oklch(0.24 0.03 65);
+  --sidebar-foreground: oklch(0.93 0.035 85);
+  --sidebar-primary: oklch(0.68 0.165 47);
+  --sidebar-primary-foreground: oklch(0.17 0.025 50);
+  --sidebar-accent: oklch(0.31 0.06 128);
+  --sidebar-accent-foreground: oklch(0.93 0.035 85);
+  --sidebar-border: oklch(0.4 0.045 70);
+  --sidebar-ring: oklch(0.72 0.15 60);
 }
 
 .dark {
@@ -152,8 +158,35 @@
 }
 
 @layer base {
-  body { font-family: var(--font-sans); }
-  h1, h2, h3, .font-serif { font-family: var(--font-serif); }
+  body {
+    font-family: var(--font-sans);
+    /* warm lamp glow + dark vignette, like a 1960s photo */
+    background-image:
+      radial-gradient(ellipse 70% 45% at 30% 0%, oklch(0.62 0.15 50 / 0.16), transparent 70%),
+      radial-gradient(ellipse 120% 90% at 50% 40%, transparent 55%, oklch(0.1 0.02 60 / 0.6));
+    background-attachment: fixed;
+    -webkit-font-smoothing: antialiased;
+  }
+  /* analog film grain over everything */
+  body::after {
+    content: "";
+    position: fixed;
+    inset: 0;
+    z-index: 9999;
+    pointer-events: none;
+    opacity: 0.13;
+    mix-blend-mode: overlay;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix values='0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 0.9 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  }
+  h1, h2, h3, .font-serif {
+    font-family: var(--font-serif);
+    font-optical-sizing: auto;
+    letter-spacing: -0.01em;
+  }
+  em { color: var(--color-primary); }
+  ::selection { background: oklch(0.68 0.165 47 / 0.45); }
+  input::placeholder { color: var(--color-muted-foreground); opacity: 0.8; }
+  img { filter: sepia(0.18) saturate(1.08) contrast(1.03); }
 }
 
 @keyframes fade-up { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: none; } }
@@ -161,4 +194,43 @@
 @utility card-lift {
   transition: transform .3s ease, box-shadow .3s ease;
   &:hover { transform: translateY(-6px); box-shadow: var(--shadow-lift); }
+}
+
+/* Teal velvet curtain: soft vertical folds with a sheen */
+@utility bg-velvet {
+  background-color: var(--cream);
+  background-image:
+    radial-gradient(ellipse 60% 70% at 50% 35%, oklch(0.62 0.15 50 / 0.22), transparent 70%),
+    repeating-linear-gradient(90deg,
+      oklch(0.22 0.06 205 / 0.55) 0px,
+      oklch(0.5 0.09 195 / 0.25) 22px,
+      oklch(0.28 0.07 200 / 0.5) 44px,
+      oklch(0.46 0.09 192 / 0.2) 70px,
+      oklch(0.22 0.06 205 / 0.55) 96px),
+    linear-gradient(180deg, oklch(0.42 0.08 195), oklch(0.26 0.06 205));
+  box-shadow: inset 0 0 120px oklch(0.1 0.03 210 / 0.65);
+}
+
+/* Walnut veneer with subtle grain */
+@utility bg-walnut {
+  background-color: var(--card);
+  background-image:
+    repeating-linear-gradient(100deg,
+      oklch(0.24 0.04 50 / 0.0) 0px,
+      oklch(0.2 0.04 45 / 0.35) 3px,
+      oklch(0.3 0.05 55 / 0.0) 9px,
+      oklch(0.22 0.04 48 / 0.25) 17px,
+      oklch(0.24 0.04 50 / 0.0) 26px),
+    linear-gradient(180deg, oklch(0.31 0.05 55), oklch(0.24 0.04 50));
+}
+
+/* Olive green leather cushion with top-stitching */
+@utility bg-leather {
+  background-color: var(--muted);
+  background-image:
+    radial-gradient(ellipse 80% 60% at 35% 20%, oklch(0.55 0.08 125 / 0.35), transparent 65%),
+    linear-gradient(170deg, oklch(0.38 0.075 128), oklch(0.27 0.055 130));
+  box-shadow: inset 0 1px 0 oklch(0.65 0.08 120 / 0.35), inset 0 -10px 24px oklch(0.15 0.03 130 / 0.5);
+  outline: 1.5px dashed oklch(0.7 0.06 110 / 0.35);
+  outline-offset: -9px;
 }

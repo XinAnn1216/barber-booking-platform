@@ -28,12 +28,12 @@ export default function BarbersPage() {
         <Link to="/" className="font-serif text-2xl font-semibold">Barberly</Link>
         <div className="ml-auto flex items-center gap-3 text-sm">
           <span className="hidden sm:inline">Hi {user.email}</span>
-          {isShop && <span className="rounded-full bg-accent px-3 py-0.5 text-xs font-medium">barber</span>}
+          {isShop && <span className="rounded-full bg-accent text-accent-foreground px-3 py-0.5 text-xs font-medium">barber</span>}
           <Button variant="pill" onClick={signOut}>Sign Out</Button>
         </div>
       </header>
       <main className="mx-auto max-w-3xl px-6 py-24">
-        <div className="rounded-[2rem] bg-cream p-12 text-center animate-fade-up">
+        <div className="rounded-[2rem] bg-velvet p-12 shadow-lift text-center animate-fade-up">
           <h1 className="text-4xl font-medium">{isShop ? "Your dashboard" : "Find your barber"}</h1>
           {isShop ? (
             <>
