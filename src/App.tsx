@@ -5,6 +5,7 @@ import Login from "@/pages/Login";
 import Barbers from "@/pages/Barbers";
 import BarberDetail from "@/pages/BarberDetail";
 import MyBookings from "@/pages/MyBookings";
+import BookingSuccess from "@/pages/BookingSuccess";
 import ShopSetup from "@/pages/ShopSetup";
 import ShopBookings from "@/pages/ShopBookings";
 import NotFound from "@/pages/NotFound";
@@ -60,6 +61,7 @@ export default function App() {
         <Route path="/barbers" element={<Barbers />} />
         <Route path="/barbers/:id" element={<BarberDetail />} />
         <Route path="/bookings" element={<MyBookings />} />
+        <Route path="/bookings/success" element={<BookingSuccess />} />
         <Route path="/shop" element={<ShopSetup />} />
         <Route path="/shop/bookings" element={<ShopBookings />} />
         <Route path="*" element={<NotFound />} />

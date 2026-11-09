@@ -19,6 +19,7 @@ import { useDocumentTitle } from "@/hooks/use-document-title";
 import { homePathFor, useSession } from "@/lib/auth";
 import { DISPLAY_TZ_LABEL, formatDateTime, formatTime } from "@/lib/booking";
 import { errMessage } from "@/lib/errors";
+import { createCheckoutUrl } from "@/lib/payments";
 import { formatMoney, usePlatformSettings } from "@/lib/platform";
 
 type Row = {
@@ -51,6 +52,7 @@ export default function MyBookingsPage() {
   const [rows, setRows] = useState<Row[] | null>(null);
   const [cancelling, setCancelling] = useState<Row | null>(null);
   const [busy, setBusy] = useState(false);
+  const [paying, setPaying] = useState<string | null>(null);
 
   useEffect(() => {
     if (loading) return;
@@ -89,6 +91,16 @@ export default function MyBookingsPage() {
     }
     toast.success("預約已取消，時段已釋出。");
     await load();
+  }
+
+  async function pay(row: Row) {
+    setPaying(row.id);
+    try {
+      window.location.assign(await createCheckoutUrl(row.id));
+    } catch (e) {
+      setPaying(null);
+      toast.error(errMessage(e, "無法前往付款頁面。"));
+    }
   }
 
   if (loading || !user || role !== "customer")
@@ -150,7 +162,12 @@ export default function MyBookingsPage() {
                     </p>
                   </div>
                   <span className="font-medium">{formatMoney(r.price, settings)}</span>
-                  {r.status !== "cancelled" && (
+                  {r.status === "pending_payment" && (
+                    <Button variant="pill" disabled={paying !== null} onClick={() => void pay(r)}>
+                      {paying === r.id ? "前往付款…" : "付款 / Pay"}
+                    </Button>
+                  )}
+                  {r.status === "pending_payment" && (
                     <Button
                       variant="outline"
                       className="rounded-full"

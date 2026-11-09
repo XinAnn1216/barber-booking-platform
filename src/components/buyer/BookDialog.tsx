@@ -22,6 +22,7 @@ import {
   type SlotWindow,
 } from "@/lib/booking";
 import { errMessage } from "@/lib/errors";
+import { createCheckoutUrl } from "@/lib/payments";
 import { formatMoney, type PlatformSettings } from "@/lib/platform";
 
 type Props = {
@@ -37,8 +38,9 @@ type Props = {
 };
 
 /**
- * Service → date → start slot → confirm. Confirm only creates the booking (status
- * pending_payment); the page stays where it is. Payment hooks onto `confirm` later.
+ * Service → date → start slot → confirm. Confirm creates the booking (status pending_payment,
+ * which holds the slots) and then sends the customer to Stripe Checkout to pay for it. The
+ * booking only becomes paid when Stripe's webhook reports the payment.
  */
 export function BookDialog({
   open,
@@ -92,22 +94,28 @@ export function BookDialog({
   async function confirm() {
     if (!service || !startId) return;
     setBusy(true);
-    const { error } = await supabase.rpc("create_booking", {
+    const { data: bookingId, error } = await supabase.rpc("create_booking", {
       p_service_id: service.id,
       p_start_slot_id: startId,
     });
-    setBusy(false);
-    if (error) {
+    if (error || !bookingId) {
+      setBusy(false);
       toast.error(errMessage(error, "Could not complete the booking."));
       onBooked(); // refresh: the slots may have just been taken
       setStartId(null);
       return;
     }
-    toast.success(`已預約 ${barberName}：${service.name}，${summary}（${DISPLAY_TZ_LABEL}）`, {
-      description: "可以在「我的預約」查看。",
-    });
-    onOpenChange(false);
-    onBooked();
+    try {
+      window.location.assign(await createCheckoutUrl(bookingId));
+    } catch (e) {
+      // The booking exists and holds the slots; the customer can pay from 我的預約.
+      setBusy(false);
+      toast.error(errMessage(e, "無法前往付款頁面。"), {
+        description: `已保留 ${barberName}：${service.name}，${summary}。可以到「我的預約」完成付款。`,
+      });
+      onOpenChange(false);
+      onBooked();
+    }
   }
 
   return (
@@ -240,7 +248,7 @@ export function BookDialog({
             取消 / Cancel
           </Button>
           <Button variant="pill" onClick={confirm} disabled={!service || !startId || busy}>
-            {busy ? "預約中…" : "確認預約 / Confirm"}
+            {busy ? "前往付款…" : "確認並付款 / Confirm & pay"}
           </Button>
         </DialogFooter>
       </DialogContent>
