@@ -36,6 +36,13 @@ describe("App routing", () => {
     expect(screen.queryByText("Page not found")).not.toBeInTheDocument();
   });
 
+  it("matches the buyer pages", () => {
+    renderAt("/barbers/7f7ff859-de39-439c-9b89-9b5e63b052e2");
+    expect(screen.queryByText("Page not found")).not.toBeInTheDocument();
+    renderAt("/bookings");
+    expect(screen.queryByText("Page not found")).not.toBeInTheDocument();
+  });
+
   it("matches the shop pages", () => {
     renderAt("/shop");
     expect(screen.queryByText("Page not found")).not.toBeInTheDocument();

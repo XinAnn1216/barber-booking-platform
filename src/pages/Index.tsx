@@ -42,7 +42,8 @@ export default function Index() {
           <Search className="absolute left-4 top-1/2 h-4 w-4 -translate-y-1/2 text-muted-foreground" />
           <input placeholder="Search" className="h-10 w-full rounded-full bg-muted pl-10 pr-4 text-sm outline-none focus:ring-2 focus:ring-ring" />
         </div>
-        <Button asChild variant="pill" className="ml-auto md:ml-0"><Link to="/login">Login</Link></Button>
+        <Link to="/barbers" className="ml-auto text-sm font-medium hover:underline md:ml-0">Browse barbers</Link>
+        <Button asChild variant="pill"><Link to="/login">Login</Link></Button>
       </header>
 
       <section className="mx-auto max-w-7xl px-6 pb-16 pt-6">

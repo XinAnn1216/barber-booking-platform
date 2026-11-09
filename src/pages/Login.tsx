@@ -1,14 +1,18 @@
-import { Link, useNavigate } from "react-router-dom";
+import { Link, useNavigate, useSearchParams } from "react-router-dom";
 import { useDocumentTitle } from "@/hooks/use-document-title";
 import { useState, type FormEvent } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
 import { fetchProfile, homePathFor, roleOf, type Role } from "@/lib/auth";
+import { safeNext } from "@/lib/booking";
 
 export default function LoginPage() {
   useDocumentTitle("Sign in or sign up — Barberly");
   const navigate = useNavigate();
+  const [params] = useSearchParams();
+  // Where to go after signing in, e.g. back to the barber page that sent us here.
+  const next = safeNext(params.get("next"));
   const [mode, setMode] = useState<"signin" | "signup">("signin");
   const [role, setRole] = useState<Role>("customer");
   const [email, setEmail] = useState("");
@@ -23,7 +27,7 @@ export default function LoginPage() {
         ? await supabase.auth.signUp({
             email,
             password,
-            options: { emailRedirectTo: `${window.location.origin}${homePathFor(role)}`, data: { role } },
+            options: { emailRedirectTo: `${window.location.origin}${role === "customer" && next ? next : homePathFor(role)}`, data: { role } },
           })
         : await supabase.auth.signInWithPassword({ email, password });
     if (error) {
@@ -40,7 +44,8 @@ export default function LoginPage() {
     // Route by the role stored in profiles, not by what the form said.
     const profile = await fetchProfile(data.session.user.id).catch(() => null);
     setBusy(false);
-    navigate(homePathFor(roleOf(profile)));
+    const home = homePathFor(roleOf(profile));
+    navigate(roleOf(profile) === "customer" && next ? next : home);
   }
 
   const seg = (active: boolean) =>

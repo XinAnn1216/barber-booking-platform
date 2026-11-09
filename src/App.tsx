@@ -3,6 +3,8 @@ import { Route, Routes } from "react-router-dom";
 import Index from "@/pages/Index";
 import Login from "@/pages/Login";
 import Barbers from "@/pages/Barbers";
+import BarberDetail from "@/pages/BarberDetail";
+import MyBookings from "@/pages/MyBookings";
 import ShopSetup from "@/pages/ShopSetup";
 import ShopBookings from "@/pages/ShopBookings";
 import NotFound from "@/pages/NotFound";
@@ -23,7 +25,9 @@ class ErrorBoundary extends Component<{ children: ReactNode }, { error: unknown 
     return (
       <div className="flex min-h-screen items-center justify-center bg-background px-4">
         <div className="max-w-md text-center">
-          <h1 className="text-xl font-semibold tracking-tight text-foreground">This page didn't load</h1>
+          <h1 className="text-xl font-semibold tracking-tight text-foreground">
+            This page didn't load
+          </h1>
           <p className="mt-2 text-sm text-muted-foreground">
             Something went wrong on our end. You can try refreshing or head back home.
           </p>
@@ -54,6 +58,8 @@ export default function App() {
         <Route path="/" element={<Index />} />
         <Route path="/login" element={<Login />} />
         <Route path="/barbers" element={<Barbers />} />
+        <Route path="/barbers/:id" element={<BarberDetail />} />
+        <Route path="/bookings" element={<MyBookings />} />
         <Route path="/shop" element={<ShopSetup />} />
         <Route path="/shop/bookings" element={<ShopBookings />} />
         <Route path="*" element={<NotFound />} />
