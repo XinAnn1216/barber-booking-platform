@@ -179,6 +179,7 @@ export type Database = {
           id: string
           paid_at: string | null
           payout_id: string | null
+          stripe_payment_intent_id: string | null
           price: number
           service_id: string
           status: string
@@ -192,6 +193,7 @@ export type Database = {
           id?: string
           paid_at?: string | null
           payout_id?: string | null
+          stripe_payment_intent_id?: string | null
           price: number
           service_id: string
           status?: string
@@ -205,6 +207,7 @@ export type Database = {
           id?: string
           paid_at?: string | null
           payout_id?: string | null
+          stripe_payment_intent_id?: string | null
           price?: number
           service_id?: string
           status?: string
