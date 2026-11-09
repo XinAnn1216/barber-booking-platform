@@ -24,5 +24,9 @@ export async function userIdFromAuthHeader(header: string | undefined): Promise<
   const token = header?.startsWith("Bearer ") ? header.slice(7) : null;
   if (!token) return null;
   const { data, error } = await supabaseAdmin.auth.getUser(token);
-  return error || !data.user ? null : data.user.id;
+  if (error || !data.user) {
+    console.warn("[auth] getUser failed", error?.status, error?.message);
+    return null;
+  }
+  return data.user.id;
 }

@@ -39,15 +39,25 @@ type BookingRow = {
   } | null;
 };
 
+function fail(res: VercelResponse, status: number, error: string, detail?: unknown) {
+  console.warn("[checkout] fail", status, error, detail ?? "");
+  return res.status(status).json({ error });
+}
+
 export default async function handler(req: VercelRequest, res: VercelResponse) {
-  if (req.method !== "POST") return res.status(405).json({ error: "method not allowed" });
+  console.log("[checkout] start", req.method, {
+    hasAuth: Boolean(req.headers.authorization),
+    hasStripeKey: Boolean(process.env["STRIPE_SECRET_KEY"]),
+    hasSupabaseSecret: Boolean(process.env["SUPABASE_SECRET_KEY"]),
+  });
+  if (req.method !== "POST") return fail(res, 405, "method not allowed");
 
   const userId = await userIdFromAuthHeader(req.headers.authorization);
-  if (!userId) return res.status(401).json({ error: "請先登入" });
+  if (!userId) return fail(res, 401, "請先登入");
 
   const bookingId = (req.body as { booking_id?: unknown } | undefined)?.booking_id;
   if (typeof bookingId !== "string" || !bookingId) {
-    return res.status(400).json({ error: "booking_id is required" });
+    return fail(res, 400, "booking_id is required");
   }
 
   // bookings has no barber_id: the barber is reached through service_id -> services.barber_id.
@@ -57,19 +67,19 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     .eq("id", bookingId)
     .maybeSingle();
   const booking = data as BookingRow | null;
-  if (error) return res.status(500).json({ error: "could not load the booking" });
+  if (error) return fail(res, 500, "could not load the booking", error);
   if (!booking || booking.customer_id !== userId) {
-    return res.status(404).json({ error: "找不到這筆預約" });
+    return fail(res, 404, "找不到這筆預約");
   }
   if (booking.status !== "pending_payment") {
-    return res.status(409).json({ error: "這筆預約不是待付款狀態" });
+    return fail(res, 409, "這筆預約不是待付款狀態");
   }
 
   const { data: cfg, error: cfgError } = await supabaseAdmin
     .from("platform_settings")
     .select("currency")
     .single();
-  if (cfgError || !cfg) return res.status(500).json({ error: "could not load platform settings" });
+  if (cfgError || !cfg) return fail(res, 500, "could not load platform settings", cfgError);
   const currency = String(cfg.currency).toLowerCase();
   const factor = ZERO_DECIMAL.has(currency) ? 1 : 100;
 
@@ -103,6 +113,6 @@ export default async function handler(req: VercelRequest, res: VercelResponse) {
     return res.status(200).json({ url: session.url });
   } catch (e) {
     console.error("[checkout] stripe error", e);
-    return res.status(502).json({ error: "無法建立付款頁面，請稍後再試" });
+    return fail(res, 502, "無法建立付款頁面，請稍後再試");
   }
 }
