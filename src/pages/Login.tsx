@@ -4,7 +4,7 @@ import { useState, type FormEvent } from "react";
 import { toast } from "sonner";
 import { supabase } from "@/integrations/supabase/client";
 import { Button } from "@/components/ui/button";
-import type { Role } from "@/lib/auth";
+import { fetchProfile, homePathFor, roleOf, type Role } from "@/lib/auth";
 
 export default function LoginPage() {
   useDocumentTitle("Sign in or sign up — Barberly");
@@ -18,20 +18,29 @@ export default function LoginPage() {
   async function submit(e: FormEvent) {
     e.preventDefault();
     setBusy(true);
-    const { error } =
+    const { data, error } =
       mode === "signup"
         ? await supabase.auth.signUp({
             email,
             password,
-            options: { emailRedirectTo: window.location.origin, data: { role } },
+            options: { emailRedirectTo: `${window.location.origin}${homePathFor(role)}`, data: { role } },
           })
         : await supabase.auth.signInWithPassword({ email, password });
-    setBusy(false);
     if (error) {
+      setBusy(false);
       toast.error(error.message);
       return;
     }
-    navigate("/barbers");
+    if (!data.session) {
+      // Sign-up with email confirmation on: no session until the link is clicked.
+      setBusy(false);
+      toast.success("Check your email to confirm your account.");
+      return;
+    }
+    // Route by the role stored in profiles, not by what the form said.
+    const profile = await fetchProfile(data.session.user.id).catch(() => null);
+    setBusy(false);
+    navigate(homePathFor(roleOf(profile)));
   }
 
   const seg = (active: boolean) =>
@@ -47,7 +56,7 @@ export default function LoginPage() {
           {mode === "signup" && (
             <div role="tablist" aria-label="Account type" className="flex rounded-full bg-muted p-1">
               <button type="button" role="tab" aria-selected={role === "customer"} className={seg(role === "customer")} onClick={() => setRole("customer")}>Customer</button>
-              <button type="button" role="tab" aria-selected={role === "shop"} className={seg(role === "shop")} onClick={() => setRole("shop")}>Barber</button>
+              <button type="button" role="tab" aria-selected={role === "shop"} className={seg(role === "shop")} onClick={() => setRole("shop")}>Shop</button>
             </div>
           )}
           <input type="email" required placeholder="Email" value={email} onChange={(e) => setEmail(e.target.value)}

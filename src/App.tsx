@@ -3,6 +3,8 @@ import { Route, Routes } from "react-router-dom";
 import Index from "@/pages/Index";
 import Login from "@/pages/Login";
 import Barbers from "@/pages/Barbers";
+import ShopSetup from "@/pages/ShopSetup";
+import ShopBookings from "@/pages/ShopBookings";
 import NotFound from "@/pages/NotFound";
 
 class ErrorBoundary extends Component<{ children: ReactNode }, { error: unknown }> {
@@ -52,6 +54,8 @@ export default function App() {
         <Route path="/" element={<Index />} />
         <Route path="/login" element={<Login />} />
         <Route path="/barbers" element={<Barbers />} />
+        <Route path="/shop" element={<ShopSetup />} />
+        <Route path="/shop/bookings" element={<ShopBookings />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </ErrorBoundary>
