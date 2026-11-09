@@ -172,6 +172,8 @@ export type Database = {
       }
       bookings: {
         Row: {
+          booked_ends_at: string | null
+          booked_starts_at: string | null
           created_at: string
           customer_id: string
           id: string
@@ -183,6 +185,8 @@ export type Database = {
           updated_at: string
         }
         Insert: {
+          booked_ends_at?: string | null
+          booked_starts_at?: string | null
           created_at?: string
           customer_id: string
           id?: string
@@ -194,6 +198,8 @@ export type Database = {
           updated_at?: string
         }
         Update: {
+          booked_ends_at?: string | null
+          booked_starts_at?: string | null
           created_at?: string
           customer_id?: string
           id?: string
@@ -328,6 +334,8 @@ export type Database = {
     Views: {
       bookings_with_start: {
         Row: {
+          booked_ends_at: string | null
+          booked_starts_at: string | null
           created_at: string | null
           customer_id: string | null
           ends_at: string | null
@@ -341,6 +349,8 @@ export type Database = {
           updated_at: string | null
         }
         Insert: {
+          booked_ends_at?: string | null
+          booked_starts_at?: string | null
           created_at?: string | null
           customer_id?: string | null
           ends_at?: never
@@ -354,6 +364,8 @@ export type Database = {
           updated_at?: string | null
         }
         Update: {
+          booked_ends_at?: string | null
+          booked_starts_at?: string | null
           created_at?: string | null
           customer_id?: string | null
           ends_at?: never

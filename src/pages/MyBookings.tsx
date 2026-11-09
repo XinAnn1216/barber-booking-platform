@@ -145,7 +145,7 @@ export default function MyBookingsPage() {
                     <p className="text-sm text-muted-foreground">
                       {r.starts_at
                         ? `${formatDateTime(r.starts_at)}${r.ends_at ? `–${formatTime(r.ends_at)}` : ""}`
-                        : "已釋出時段"}
+                        : "時間未記錄"}
                       {barber?.address ? ` · ${barber.address}` : ""}
                     </p>
                   </div>
