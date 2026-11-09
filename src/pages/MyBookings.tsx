@@ -57,7 +57,7 @@ export default function MyBookingsPage() {
   useEffect(() => {
     if (loading) return;
     if (!user) navigate(`/login?next=${encodeURIComponent("/bookings")}`, { replace: true });
-    else if (role === "shop") navigate(homePathFor("shop"), { replace: true });
+    else if (role !== "customer") navigate(homePathFor(role), { replace: true });
   }, [loading, user, role, navigate]);
 
   const load = useCallback(async () => {

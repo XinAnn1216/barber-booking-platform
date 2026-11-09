@@ -8,6 +8,8 @@ import MyBookings from "@/pages/MyBookings";
 import BookingSuccess from "@/pages/BookingSuccess";
 import ShopSetup from "@/pages/ShopSetup";
 import ShopBookings from "@/pages/ShopBookings";
+import ShopEarnings from "@/pages/ShopEarnings";
+import AdminPayouts from "@/pages/AdminPayouts";
 import NotFound from "@/pages/NotFound";
 
 class ErrorBoundary extends Component<{ children: ReactNode }, { error: unknown }> {
@@ -64,6 +66,8 @@ export default function App() {
         <Route path="/bookings/success" element={<BookingSuccess />} />
         <Route path="/shop" element={<ShopSetup />} />
         <Route path="/shop/bookings" element={<ShopBookings />} />
+        <Route path="/shop/earnings" element={<ShopEarnings />} />
+        <Route path="/admin/payouts" element={<AdminPayouts />} />
         <Route path="*" element={<NotFound />} />
       </Routes>
     </ErrorBoundary>

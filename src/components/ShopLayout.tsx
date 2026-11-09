@@ -42,6 +42,9 @@ export function ShopLayout({ children }: { children: (s: ShopSession) => ReactNo
           <NavLink to="/shop/bookings" className={tab}>
             Services & slots
           </NavLink>
+          <NavLink to="/shop/earnings" className={tab}>
+            收入 / Earnings
+          </NavLink>
         </nav>
         <div className="ml-auto flex items-center gap-3 text-sm">
           <span className="hidden sm:inline">{profile.display_name || user.email}</span>

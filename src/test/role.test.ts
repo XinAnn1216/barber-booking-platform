@@ -6,6 +6,9 @@ describe("roleOf (reads profiles.role)", () => {
   it("returns shop only when the profile role is shop", () => {
     expect(roleOf({ role: "shop" })).toBe("shop");
   });
+  it("recognises admin", () => {
+    expect(roleOf({ role: "admin" })).toBe("admin");
+  });
   it("defaults to customer", () => {
     expect(roleOf(null)).toBe("customer");
     expect(roleOf({ role: "customer" })).toBe("customer");
@@ -16,6 +19,7 @@ describe("homePathFor", () => {
   it("sends shops to the shop dashboard and customers to the browse page", () => {
     expect(homePathFor("shop")).toBe("/shop");
     expect(homePathFor("customer")).toBe("/barbers");
+    expect(homePathFor("admin")).toBe("/admin/payouts");
   });
 });
 

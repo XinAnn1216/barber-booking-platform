@@ -48,6 +48,13 @@ describe("App routing", () => {
     expect(screen.queryByText("Page not found")).not.toBeInTheDocument();
     renderAt("/shop/bookings");
     expect(screen.queryByText("Page not found")).not.toBeInTheDocument();
+    renderAt("/shop/earnings");
+    expect(screen.queryByText("Page not found")).not.toBeInTheDocument();
+  });
+
+  it("matches the admin payouts page", () => {
+    renderAt("/admin/payouts");
+    expect(screen.queryByText("Page not found")).not.toBeInTheDocument();
   });
 
   it("shows not found for unknown paths", () => {

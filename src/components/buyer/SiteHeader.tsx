@@ -40,6 +40,11 @@ export function SiteHeader({ session }: { session: Session }) {
             Shop dashboard
           </NavLink>
         )}
+        {user && role === "admin" && (
+          <NavLink to="/admin/payouts" className={tab}>
+            撥款 / Payouts
+          </NavLink>
+        )}
       </nav>
       <div className="ml-auto flex items-center gap-3 text-sm">
         {loading ? null : user ? (

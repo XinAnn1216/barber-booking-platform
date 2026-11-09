@@ -3,14 +3,18 @@ import type { User } from "@supabase/supabase-js";
 import { supabase } from "@/integrations/supabase/client";
 import type { Tables } from "@/integrations/supabase/types";
 
-/** Roles a person can pick at sign-up or upgrade to. The DB also allows 'admin', set only by migration. */
+/** Roles a person can pick at sign-up or upgrade to. */
 export type Role = "customer" | "shop";
+
+/** Every role the app routes on. 'admin' is set only by a migration, never from the UI. */
+export type AppRole = Role | "admin";
 
 export type Profile = Tables<"profiles">;
 
 /** The role always comes from the `profiles` row, never from auth metadata. */
-export function roleOf(profile: Pick<Profile, "role"> | null | undefined): Role {
-  return profile?.role === "shop" ? "shop" : "customer";
+export function roleOf(profile: Pick<Profile, "role"> | null | undefined): AppRole {
+  if (profile?.role === "shop" || profile?.role === "admin") return profile.role;
+  return "customer";
 }
 
 /** A shop finishes signup once its shop name and both bank fields are filled. */
@@ -23,8 +27,10 @@ export function isOnboarded(
 }
 
 /** Where a signed-in person lands, by role. */
-export function homePathFor(role: Role): string {
-  return role === "shop" ? "/shop" : "/barbers";
+export function homePathFor(role: AppRole): string {
+  if (role === "shop") return "/shop";
+  if (role === "admin") return "/admin/payouts";
+  return "/barbers";
 }
 
 export async function fetchProfile(userId: string): Promise<Profile | null> {

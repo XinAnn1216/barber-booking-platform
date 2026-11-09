@@ -256,6 +256,60 @@ export type Database = {
 
         ]
       }
+      payouts: {
+        Row: {
+          bank_reference: string | null
+          bookings_count: number
+          created_at: string
+          created_by: string | null
+          gross: number
+          id: string
+          marked_transferred_at: string | null
+          note: string | null
+          platform_cut: number
+          platform_pct: number
+          shop_cut: number
+          shop_id: string
+          shop_name: string | null
+          status: string
+          transferred_by: string | null
+        }
+        Insert: {
+          bank_reference?: string | null
+          bookings_count?: number
+          created_at?: string
+          created_by?: string | null
+          gross?: number
+          id?: string
+          marked_transferred_at?: string | null
+          note?: string | null
+          platform_cut?: number
+          platform_pct?: number
+          shop_cut?: number
+          shop_id?: string
+          shop_name?: string | null
+          status?: string
+          transferred_by?: string | null
+        }
+        Update: {
+          bank_reference?: string | null
+          bookings_count?: number
+          created_at?: string
+          created_by?: string | null
+          gross?: number
+          id?: string
+          marked_transferred_at?: string | null
+          note?: string | null
+          platform_cut?: number
+          platform_pct?: number
+          shop_cut?: number
+          shop_id?: string
+          shop_name?: string | null
+          status?: string
+          transferred_by?: string | null
+        }
+        Relationships: []
+      }
       profiles: {
         Row: {
           bank_account_name: string | null
@@ -335,6 +389,24 @@ export type Database = {
       }
     }
     Views: {
+      owed_bookings: {
+        Row: {
+          barber_id: string | null
+          barber_name: string | null
+          booked_starts_at: string | null
+          booking_id: string | null
+          customer_id: string | null
+          paid_at: string | null
+          platform_cut: number | null
+          platform_pct: number | null
+          price: number | null
+          service_name: string | null
+          shop_cut: number | null
+          shop_id: string | null
+          shop_name: string | null
+        }
+        Relationships: []
+      }
       bookings_with_start: {
         Row: {
           booked_ends_at: string | null
@@ -435,12 +507,21 @@ export type Database = {
       }
     }
     Functions: {
+      build_payout: {
+        Args: { p_booking_ids: string[]; p_note?: string }
+        Returns: string
+      }
+      cancel_payout: { Args: { p_payout_id: string }; Returns: undefined }
       become_shop: { Args: never; Returns: string }
       create_booking: {
         Args: { p_service_id: string; p_start_slot_id: string }
         Returns: string
       }
       is_admin: { Args: never; Returns: boolean }
+      mark_payout_transferred: {
+        Args: { p_bank_reference?: string; p_payout_id: string }
+        Returns: undefined
+      }
     }
     Enums: {
       [_ in never]: never
